@@ -1,35 +1,31 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
 using namespace std;
 
 int main() {
-    int N, S;
+    long long N, S;
     cin >> N >> S;
     int timeElapsed = 0;
-    int inflatedBaloons = 0;
+    long long inflatedBaloons = 0;
+    priority_queue<int> pq;
 
-    vector<int> arr(N);
     for (int i=0; i<N; i++) {
-        cin >> arr[i];
-    }
-    
-    sort(arr.begin(), arr.end(), greater<int>());
-
-    for (int x:arr) {
-        inflatedBaloons+=x;
+        long long x;
+        cin >> x;
+        inflatedBaloons += x;
+        pq.push(x);
     }
 
-    for (int x:arr) {
-        if (inflatedBaloons <= S) {
-            break;
-        }
-        else {
-            timeElapsed++;
-            inflatedBaloons-= (x - (x/2));
-        }
+    while (inflatedBaloons > S && !pq.empty()) {
+        long long x = pq.top();
+        pq.pop();
+        inflatedBaloons-= (x - (x/2));
+        x = x/2;
+        pq.push(x);
+        timeElapsed++;
     }
-
-    cout << timeElapsed;
+    cout << timeElapsed << "\n";
     return 0;
 }
